@@ -17,7 +17,7 @@ export default function ComplianceChecker() {
     
     try {
       const response = await fetch(
-        `https://your-api-url.com/check_compliance?website_url=${encodeURIComponent(url)}`
+        `https://tcr-api-bzn4.onrender.com/check_compliance?website_url=${encodeURIComponent(url)}`
       );
       
       if (!response.ok) {

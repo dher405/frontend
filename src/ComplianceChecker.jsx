@@ -15,9 +15,12 @@ export default function ComplianceChecker() {
 
   const extractSection = (text, sectionTitle) => {
     /** Extracts only the requested section from the compliance report */
-    const regex = new RegExp(`### ${sectionTitle}([\\s\\S]*?)(###|$)`, "i");
+    if (!text) return "No relevant information found.";
+
+    const regex = new RegExp(`###\\s*${sectionTitle}([\\s\\S]*?)(###|$)`, "i"); // Case-insensitive match
     const match = text.match(regex);
-    return match ? match[1].trim() : "No relevant information found.";
+    
+    return match ? match[1].trim() : `No details found for "${sectionTitle}".`;
   };
 
   const handleCheckCompliance = async () => {
@@ -128,3 +131,4 @@ export default function ComplianceChecker() {
     </div>
   );
 }
+

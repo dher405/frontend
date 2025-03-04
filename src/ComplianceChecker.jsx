@@ -68,8 +68,8 @@ const ComplianceChecker = () => {
           {complianceData.privacy_policy ? (
             <div className="report-section">
               <h3>📜 Privacy Policy</h3>
-              <p><strong>SMS Consent Data Sharing:</strong> {complianceData.privacy_policy.sms_consent_data_share}</p>
-              <p><strong>Data Collection & Usage:</strong> {complianceData.privacy_policy.data_collection_usage}</p>
+              <p><strong>SMS Consent Data Sharing:</strong> {complianceData.privacy_policy.sms_consent_data}</p>
+              <p><strong>Data Collection & Usage:</strong> {complianceData.privacy_policy.data_collection_explanation}</p>
             </div>
           ) : (
             <p className="error">⚠️ Privacy policy data is missing.</p>
@@ -90,8 +90,17 @@ const ComplianceChecker = () => {
           {complianceData.overall_compliance ? (
             <div className="report-section">
               <h3>🔎 Overall Compliance Status</h3>
-              <p><strong>Privacy Policy:</strong> {complianceData.overall_compliance.privacy_policy}</p>
-              <p><strong>Terms & Conditions:</strong> {complianceData.overall_compliance.terms_conditions}</p>
+              <p><strong>Status:</strong> {complianceData.overall_compliance.status}</p>
+              {complianceData.overall_compliance.recommendations?.length > 0 && (
+                <>
+                  <p><strong>Recommendations:</strong></p>
+                  <ul>
+                    {complianceData.overall_compliance.recommendations.map((rec, index) => (
+                      <li key={index}>{rec}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </div>
           ) : (
             <p className="error">⚠️ Compliance summary is missing.</p>
@@ -148,4 +157,3 @@ const ComplianceChecker = () => {
 };
 
 export default ComplianceChecker;
-

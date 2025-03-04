@@ -13,6 +13,13 @@ export default function ComplianceChecker() {
     return inputUrl;
   };
 
+  const extractSection = (text, sectionTitle) => {
+    /** Extracts only the requested section from the compliance report */
+    const regex = new RegExp(`### ${sectionTitle}([\\s\\S]*?)(###|$)`, "i");
+    const match = text.match(regex);
+    return match ? match[1].trim() : "No relevant information found.";
+  };
+
   const handleCheckCompliance = async () => {
     if (!url) {
       setError("Please enter a valid website URL.");
@@ -84,7 +91,7 @@ export default function ComplianceChecker() {
             <div className="mt-2">
               <h4 className="font-semibold">Compliance Details:</h4>
               <p className="text-gray-700 whitespace-pre-line">
-                {report.privacy_policy.compliance_report}
+                {extractSection(report.privacy_policy.compliance_report, "Privacy Policy Assessment")}
               </p>
             </div>
           </div>
@@ -104,9 +111,17 @@ export default function ComplianceChecker() {
             <div className="mt-2">
               <h4 className="font-semibold">Compliance Details:</h4>
               <p className="text-gray-700 whitespace-pre-line">
-                {report.terms_conditions.compliance_report}
+                {extractSection(report.terms_conditions.compliance_report, "Terms, Conditions Assessment")}
               </p>
             </div>
+          </div>
+
+          {/* Summary of Compliance */}
+          <div className="mt-3 p-3 bg-white rounded shadow">
+            <h3 className="text-md font-semibold">Summary of Compliance</h3>
+            <p className="text-gray-700 whitespace-pre-line">
+              {extractSection(report.privacy_policy.compliance_report, "Summary of Compliance")}
+            </p>
           </div>
         </div>
       )}

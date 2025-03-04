@@ -47,7 +47,7 @@ export default function ComplianceChecker() {
 
   return (
     <div className="flex flex-col items-center gap-4 p-6">
-      <h1 className="text-2xl font-bold">TCR Website Compliance Checker</h1>
+      <h1 className="text-2xl font-bold text-center">TCR Website Compliance Checker</h1>
       <input
         type="text"
         placeholder="Enter website URL"
@@ -68,12 +68,38 @@ export default function ComplianceChecker() {
       {report && (
         <div className="w-full max-w-2xl p-4 border rounded mt-4 bg-gray-100">
           <h2 className="text-lg font-semibold">Compliance Report</h2>
-          <p><strong>Privacy Policy Compliance:</strong> {report.privacy_policy.compliance_report}</p>
-          <p><strong>Terms & Conditions Compliance:</strong> {report.terms_conditions.compliance_report}</p>
+
+          {/* Privacy Policy Section */}
+          <div className="mt-3 p-3 bg-white rounded shadow">
+            <h3 className="text-md font-semibold">Privacy Policy Compliance</h3>
+            <p><strong>Text Length:</strong> {report.privacy_policy.text_length} characters</p>
+            <p>
+              <strong>Status:</strong> {report.privacy_policy.found ? (
+                <span className="text-green-600">✅ Found</span>
+              ) : (
+                <span className="text-red-600">❌ Not Found</span>
+              )}
+            </p>
+            <p className="mt-2"><strong>Compliance Details:</strong></p>
+            <p className="text-gray-700">{report.privacy_policy.compliance_report}</p>
+          </div>
+
+          {/* Terms & Conditions Section */}
+          <div className="mt-3 p-3 bg-white rounded shadow">
+            <h3 className="text-md font-semibold">Terms & Conditions Compliance</h3>
+            <p><strong>Text Length:</strong> {report.terms_conditions.text_length} characters</p>
+            <p>
+              <strong>Status:</strong> {report.terms_conditions.found ? (
+                <span className="text-green-600">✅ Found</span>
+              ) : (
+                <span className="text-red-600">❌ Not Found</span>
+              )}
+            </p>
+            <p className="mt-2"><strong>Compliance Details:</strong></p>
+            <p className="text-gray-700">{report.terms_conditions.compliance_report}</p>
+          </div>
         </div>
       )}
     </div>
   );
 }
-
-

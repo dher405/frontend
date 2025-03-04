@@ -34,8 +34,11 @@ export default function ComplianceChecker() {
       }
       
       const data = await response.json();
-      setReport(data.compliance_report);
+      console.log("API Response:", data);  // Debugging line
+
+      setReport(data);
     } catch (err) {
+      console.error("Fetch Error:", err);  // Debugging line
       setError(err.message);
     } finally {
       setLoading(false);
@@ -63,11 +66,14 @@ export default function ComplianceChecker() {
       {report && (
         <div className="w-full max-w-2xl p-4 border rounded mt-4 bg-gray-100">
           <h2 className="text-lg font-semibold">Compliance Report</h2>
-          <pre className="whitespace-pre-wrap text-sm">{report}</pre>
+          <p><strong>Privacy Policy Compliance:</strong> {report.privacy_policy.compliance_report}</p>
+          <p><strong>Terms & Conditions Compliance:</strong> {report.terms_conditions.compliance_report}</p>
         </div>
       )}
     </div>
   );
+}
+
 }
 
 

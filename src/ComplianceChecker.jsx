@@ -15,7 +15,14 @@ const ComplianceChecker = () => {
       console.log("Sending request to API..."); // Debugging log
       const response = await fetch(
         `https://tcr-api-bzn4.onrender.com/check_compliance?website_url=${encodeURIComponent(websiteUrl)}`,
-        { method: "GET" }
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          mode: "cors", // ✅ Ensures CORS headers are included
+          credentials: "include", // ✅ Ensures authentication if required
+        }
       );
 
       if (!response.ok) {

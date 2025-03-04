@@ -21,7 +21,7 @@ const ComplianceChecker = () => {
       }
 
       const data = await response.json();
-      setComplianceData(data);
+      setComplianceData(data.complianceAnalysis); // ✅ Extract the correct key
     } catch (err) {
       setError("Failed to check compliance. Please try again.");
     } finally {
@@ -48,36 +48,27 @@ const ComplianceChecker = () => {
         <div className="results">
           <h2>Compliance Report</h2>
 
-          <div className="report-section">
-            <h3>📜 Privacy Policy</h3>
-            <p>
-              <strong>Status:</strong>{" "}
-              {complianceData.privacy_policy.found ? (
-                <span className="badge success">✅ Found</span>
-              ) : (
-                <span className="badge fail">❌ Not Found</span>
-              )}
-            </p>
-            <p><strong>Assessment:</strong> {complianceData.privacy_policy.assessment}</p>
-          </div>
+          {/* ✅ Check if privacyPolicy exists before accessing */}
+          {complianceData.privacyPolicy ? (
+            <div className="report-section">
+              <h3>📜 Privacy Policy</h3>
+              <p><strong>SMS Consent Data Sharing:</strong> {complianceData.privacyPolicy.smsConsentDataSharing}</p>
+              <p><strong>Data Collection & Usage:</strong> {complianceData.privacyPolicy.dataCollectionAndUsageExplanation}</p>
+            </div>
+          ) : (
+            <p className="error">⚠️ Privacy policy data is missing.</p>
+          )}
 
-          <div className="report-section">
-            <h3>📄 Terms & Conditions</h3>
-            <p>
-              <strong>Status:</strong>{" "}
-              {complianceData.terms_conditions.found ? (
-                <span className="badge success">✅ Found</span>
-              ) : (
-                <span className="badge fail">❌ Not Found</span>
-              )}
-            </p>
-            <p><strong>Assessment:</strong> {complianceData.terms_conditions.assessment}</p>
-          </div>
-
-          <div className="report-section">
-            <h3>🔎 Summary of Compliance</h3>
-            <p>{complianceData.summary_of_compliance}</p>
-          </div>
+          {/* ✅ Check if termsAndConditions exists before accessing */}
+          {complianceData.termsAndConditions ? (
+            <div className="report-section">
+              <h3>📄 Terms & Conditions</h3>
+              <p><strong>Message Types:</strong> {complianceData.termsAndConditions.messageTypes}</p>
+              <p><strong>Mandatory Disclosures:</strong> {complianceData.termsAndConditions.mandatoryDisclosures}</p>
+            </div>
+          ) : (
+            <p className="error">⚠️ Terms & Conditions data is missing.</p>
+          )}
         </div>
       )}
 
@@ -120,18 +111,9 @@ const ComplianceChecker = () => {
           padding: 10px;
           border-bottom: 1px solid #ddd;
         }
-        .badge {
-          padding: 5px 10px;
-          border-radius: 5px;
+        .error {
+          color: #dc3545;
           font-weight: bold;
-        }
-        .success {
-          background: #28a745;
-          color: white;
-        }
-        .fail {
-          background: #dc3545;
-          color: white;
         }
       `}</style>
     </div>

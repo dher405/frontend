@@ -13,22 +13,6 @@ export default function ComplianceChecker() {
     return inputUrl;
   };
 
-  const extractSection = (text, sectionTitle) => {
-    /** Extracts only the requested section from the compliance report */
-    if (!text) return "No relevant information found.";
-
-    // Splitting text into sections using known headers
-    const sections = text.split("\n\n");
-
-    for (let section of sections) {
-      if (section.includes(sectionTitle)) {
-        return section.replace(sectionTitle, "").trim(); // Remove header and return content
-      }
-    }
-
-    return "No details found for this section.";
-  };
-
   const handleCheckCompliance = async () => {
     if (!url) {
       setError("Please enter a valid website URL.");
@@ -95,12 +79,10 @@ export default function ComplianceChecker() {
                 <span className="text-red-600">❌ Not Found</span>
               )}
             </p>
-
-            {/* Privacy Policy Compliance Details */}
             <div className="mt-2">
-              <h4 className="font-semibold">Compliance Details:</h4>
+              <h4 className="font-semibold">Assessment:</h4>
               <p className="text-gray-700 whitespace-pre-line">
-                {extractSection(report.privacy_policy.compliance_report, "1. **Privacy Policy Assessment:**")}
+                {report.privacy_policy.assessment || "No details available"}
               </p>
             </div>
           </div>
@@ -115,12 +97,10 @@ export default function ComplianceChecker() {
                 <span className="text-red-600">❌ Not Found</span>
               )}
             </p>
-
-            {/* Terms & Conditions Compliance Details */}
             <div className="mt-2">
-              <h4 className="font-semibold">Compliance Details:</h4>
+              <h4 className="font-semibold">Assessment:</h4>
               <p className="text-gray-700 whitespace-pre-line">
-                {extractSection(report.terms_conditions.compliance_report, "2. **Terms of Service Assessment:**")}
+                {report.terms_conditions.assessment || "No details available"}
               </p>
             </div>
           </div>
@@ -129,7 +109,7 @@ export default function ComplianceChecker() {
           <div className="mt-3 p-3 bg-white rounded shadow">
             <h3 className="text-md font-semibold">Summary of Compliance</h3>
             <p className="text-gray-700 whitespace-pre-line">
-              {extractSection(report.privacy_policy.compliance_report, "**Summary of Compliance:**")}
+              {report.summary_of_compliance || "No summary available"}
             </p>
           </div>
         </div>

@@ -13,14 +13,21 @@ export default function ComplianceChecker() {
     return inputUrl;
   };
 
-  const extractSection = (text, sectionTitle) => {
+  const extractSection = (text, sectionTitles) => {
     /** Extracts only the requested section from the compliance report */
     if (!text) return "No relevant information found.";
 
-    const regex = new RegExp(`###\\s*${sectionTitle}([\\s\\S]*?)(###|$)`, "i"); // Case-insensitive match
-    const match = text.match(regex);
-    
-    return match ? match[1].trim() : `No details found for "${sectionTitle}".`;
+    // Normalize text to remove extra spaces
+    const normalizedText = text.replace(/\s+/g, " ").trim();
+
+    // Allow checking multiple possible section titles
+    for (let sectionTitle of sectionTitles) {
+      const regex = new RegExp(`###\\s*${sectionTitle}([\\s\\S]*?)(###|$)`, "i"); // Case-insensitive match
+      const match = normalizedText.match(regex);
+      if (match) return match[1].trim(); // Return first found match
+    }
+
+    return "No details found for this section.";
   };
 
   const handleCheckCompliance = async () => {
@@ -94,7 +101,9 @@ export default function ComplianceChecker() {
             <div className="mt-2">
               <h4 className="font-semibold">Compliance Details:</h4>
               <p className="text-gray-700 whitespace-pre-line">
-                {extractSection(report.privacy_policy.compliance_report, "Privacy Policy Assessment")}
+                {extractSection(report.privacy_policy.compliance_report, [
+                  "Privacy Policy Assessment"
+                ])}
               </p>
             </div>
           </div>
@@ -114,7 +123,11 @@ export default function ComplianceChecker() {
             <div className="mt-2">
               <h4 className="font-semibold">Compliance Details:</h4>
               <p className="text-gray-700 whitespace-pre-line">
-                {extractSection(report.terms_conditions.compliance_report, "Terms, Conditions Assessment")}
+                {extractSection(report.terms_conditions.compliance_report, [
+                  "Terms & Conditions Assessment",
+                  "Terms and Conditions Assessment",
+                  "Terms & Conditions Review"
+                ])}
               </p>
             </div>
           </div>
@@ -123,7 +136,11 @@ export default function ComplianceChecker() {
           <div className="mt-3 p-3 bg-white rounded shadow">
             <h3 className="text-md font-semibold">Summary of Compliance</h3>
             <p className="text-gray-700 whitespace-pre-line">
-              {extractSection(report.privacy_policy.compliance_report, "Summary of Compliance")}
+              {extractSection(report.privacy_policy.compliance_report, [
+                "Summary of Compliance",
+                "Compliance Summary",
+                "Overall Compliance Status"
+              ])}
             </p>
           </div>
         </div>

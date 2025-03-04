@@ -139,5 +139,3 @@ const ComplianceChecker = () => {
 };
 
 export default ComplianceChecker;
-
-

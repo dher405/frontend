@@ -13,18 +13,17 @@ export default function ComplianceChecker() {
     return inputUrl;
   };
 
-  const extractSection = (text, sectionTitles) => {
+  const extractSection = (text, sectionTitle) => {
     /** Extracts only the requested section from the compliance report */
     if (!text) return "No relevant information found.";
 
-    // Normalize text to remove extra spaces
-    const normalizedText = text.replace(/\s+/g, " ").trim();
+    // Splitting text into sections using known headers
+    const sections = text.split("\n\n");
 
-    // Allow checking multiple possible section titles
-    for (let sectionTitle of sectionTitles) {
-      const regex = new RegExp(`###\\s*${sectionTitle}([\\s\\S]*?)(###|$)`, "i"); // Case-insensitive match
-      const match = normalizedText.match(regex);
-      if (match) return match[1].trim(); // Return first found match
+    for (let section of sections) {
+      if (section.includes(sectionTitle)) {
+        return section.replace(sectionTitle, "").trim(); // Remove header and return content
+      }
     }
 
     return "No details found for this section.";
@@ -101,9 +100,7 @@ export default function ComplianceChecker() {
             <div className="mt-2">
               <h4 className="font-semibold">Compliance Details:</h4>
               <p className="text-gray-700 whitespace-pre-line">
-                {extractSection(report.privacy_policy.compliance_report, [
-                  "Privacy Policy Assessment"
-                ])}
+                {extractSection(report.privacy_policy.compliance_report, "1. **Privacy Policy Assessment:**")}
               </p>
             </div>
           </div>
@@ -123,11 +120,7 @@ export default function ComplianceChecker() {
             <div className="mt-2">
               <h4 className="font-semibold">Compliance Details:</h4>
               <p className="text-gray-700 whitespace-pre-line">
-                {extractSection(report.terms_conditions.compliance_report, [
-                  "Terms & Conditions Assessment",
-                  "Terms and Conditions Assessment",
-                  "Terms & Conditions Review"
-                ])}
+                {extractSection(report.terms_conditions.compliance_report, "2. **Terms of Service Assessment:**")}
               </p>
             </div>
           </div>
@@ -136,11 +129,7 @@ export default function ComplianceChecker() {
           <div className="mt-3 p-3 bg-white rounded shadow">
             <h3 className="text-md font-semibold">Summary of Compliance</h3>
             <p className="text-gray-700 whitespace-pre-line">
-              {extractSection(report.privacy_policy.compliance_report, [
-                "Summary of Compliance",
-                "Compliance Summary",
-                "Overall Compliance Status"
-              ])}
+              {extractSection(report.privacy_policy.compliance_report, "**Summary of Compliance:**")}
             </p>
           </div>
         </div>
@@ -148,4 +137,3 @@ export default function ComplianceChecker() {
     </div>
   );
 }
-

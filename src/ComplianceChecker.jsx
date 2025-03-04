@@ -57,35 +57,36 @@ const ComplianceChecker = () => {
         <div className="results">
           <h2>Compliance Report</h2>
 
-          {/* ✅ Check if Privacy Policy exists */}
-          {complianceData.privacy_policy ? (
+          {/* ✅ Display Privacy Policy Data */}
+          {complianceData.Privacy_Policy ? (
             <div className="report-section">
               <h3>📜 Privacy Policy</h3>
-              <p><strong>SMS Consent:</strong> {complianceData.privacy_policy.sms_consent.statement}</p>
-              <p>
-                <strong>Shared with third parties:</strong>{" "}
-                {complianceData.privacy_policy.sms_consent.shared_with_third_parties ? "❌ Yes" : "✅ No"}
-              </p>
-              <p><strong>Data Collection & Usage:</strong> {complianceData.privacy_policy.data_collection_usage.details}</p>
+              <p><strong>Consent Data Sharing:</strong> {complianceData.Privacy_Policy.consent_data_sharing}</p>
+              <p><strong>Data Collection & Usage:</strong> {complianceData.Privacy_Policy.data_collection_usage}</p>
             </div>
           ) : (
             <p className="error">⚠️ Privacy policy data is missing.</p>
           )}
 
-          {/* ✅ Check if Terms & Conditions exist */}
-          {complianceData.terms_conditions ? (
+          {/* ✅ Display Terms & Conditions Data */}
+          {complianceData.Terms_and_Conditions ? (
             <div className="report-section">
               <h3>📄 Terms & Conditions</h3>
-              <p><strong>Message Types:</strong></p>
-              <ul>
-                {complianceData.terms_conditions.message_types.types.map((type, index) => (
-                  <li key={index}>{type}</li>
-                ))}
-              </ul>
-              <p><strong>Mandatory Disclosures:</strong> {complianceData.terms_conditions.mandatory_disclosures.details}</p>
+              <p><strong>Message Types:</strong> {complianceData.Terms_and_Conditions.message_types}</p>
+              <p><strong>Mandatory Disclosures:</strong> {complianceData.Terms_and_Conditions.mandatory_disclosures}</p>
             </div>
           ) : (
             <p className="error">⚠️ Terms & Conditions data is missing.</p>
+          )}
+
+          {/* ✅ Display Overall Compliance Summary */}
+          {complianceData.overall_compliance ? (
+            <div className="report-section">
+              <h3>🔎 Overall Compliance Summary</h3>
+              <p>{complianceData.overall_compliance}</p>
+            </div>
+          ) : (
+            <p className="error">⚠️ Compliance summary is missing.</p>
           )}
         </div>
       )}

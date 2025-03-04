@@ -24,11 +24,11 @@ const ComplianceChecker = () => {
 
       const data = await response.json();
 
-      if (!data || !data.SMS_Compliance) {
+      if (!data || !data.compliance_analysis) {
         throw new Error("Invalid API response format.");
       }
 
-      setComplianceData(data.SMS_Compliance);
+      setComplianceData(data.compliance_analysis);
       console.log("API Response:", data); // Debugging log
     } catch (err) {
       console.error("API Error:", err);
@@ -58,22 +58,31 @@ const ComplianceChecker = () => {
           <h2>Compliance Report</h2>
 
           {/* ✅ Check if Privacy Policy exists */}
-          {complianceData.Privacy_Policy ? (
+          {complianceData.privacy_policy ? (
             <div className="report-section">
               <h3>📜 Privacy Policy</h3>
-              <p><strong>SMS Consent Data Sharing:</strong> {complianceData.Privacy_Policy.SMS_Consent_Data_Sharing}</p>
-              <p><strong>Data Collection & Usage:</strong> {complianceData.Privacy_Policy.Data_Collection_Usage}</p>
+              <p><strong>SMS Consent:</strong> {complianceData.privacy_policy.sms_consent.statement}</p>
+              <p>
+                <strong>Shared with third parties:</strong>{" "}
+                {complianceData.privacy_policy.sms_consent.shared_with_third_parties ? "❌ Yes" : "✅ No"}
+              </p>
+              <p><strong>Data Collection & Usage:</strong> {complianceData.privacy_policy.data_collection_usage.details}</p>
             </div>
           ) : (
             <p className="error">⚠️ Privacy policy data is missing.</p>
           )}
 
           {/* ✅ Check if Terms & Conditions exist */}
-          {complianceData.Terms_Conditions ? (
+          {complianceData.terms_conditions ? (
             <div className="report-section">
               <h3>📄 Terms & Conditions</h3>
-              <p><strong>Message Types:</strong> {complianceData.Terms_Conditions.Message_Types}</p>
-              <p><strong>Mandatory Disclosures:</strong> {complianceData.Terms_Conditions.Mandatory_Disclosures}</p>
+              <p><strong>Message Types:</strong></p>
+              <ul>
+                {complianceData.terms_conditions.message_types.types.map((type, index) => (
+                  <li key={index}>{type}</li>
+                ))}
+              </ul>
+              <p><strong>Mandatory Disclosures:</strong> {complianceData.terms_conditions.mandatory_disclosures.details}</p>
             </div>
           ) : (
             <p className="error">⚠️ Terms & Conditions data is missing.</p>
@@ -130,4 +139,3 @@ const ComplianceChecker = () => {
 };
 
 export default ComplianceChecker;
-

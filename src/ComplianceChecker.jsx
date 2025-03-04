@@ -12,7 +12,7 @@ const ComplianceChecker = () => {
     setComplianceData(null);
 
     try {
-      console.log("Sending request to API..."); // Debugging log
+      console.log("Sending request to API...");
       const response = await fetch(
         `https://tcr-api-bzn4.onrender.com/check_compliance?website_url=${encodeURIComponent(websiteUrl)}`,
         {
@@ -20,8 +20,8 @@ const ComplianceChecker = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          mode: "cors", // ✅ Ensures CORS headers are included
-          credentials: "include", // ✅ Ensures authentication if required
+          mode: "cors",
+          credentials: "include",
         }
       );
 
@@ -31,12 +31,12 @@ const ComplianceChecker = () => {
 
       const data = await response.json();
 
-      if (!data || !data.complianceAnalysis) {
+      if (!data || !data.compliance_analysis) {
         throw new Error("Invalid API response format.");
       }
 
-      setComplianceData(data.complianceAnalysis);
-      console.log("API Response:", data); // Debugging log
+      setComplianceData(data.compliance_analysis);
+      console.log("API Response:", data);
     } catch (err) {
       console.error("API Error:", err);
       setError(`Failed to check compliance: ${err.message}`);
@@ -65,52 +65,33 @@ const ComplianceChecker = () => {
           <h2>Compliance Report</h2>
 
           {/* ✅ Display Privacy Policy Data */}
-          {complianceData.privacyPolicy ? (
+          {complianceData.privacy_policy ? (
             <div className="report-section">
               <h3>📜 Privacy Policy</h3>
-              <p><strong>SMS Consent Data Sharing:</strong> {complianceData.privacyPolicy.smsConsentDataSharing}</p>
-              <p><strong>Data Collection & Usage:</strong> {complianceData.privacyPolicy.dataCollectionAndUsage}</p>
-              {complianceData.privacyPolicy.recommendations?.length > 0 && (
-                <>
-                  <p><strong>Recommendations:</strong></p>
-                  <ul>
-                    {complianceData.privacyPolicy.recommendations.map((rec, index) => (
-                      <li key={index}>{rec}</li>
-                    ))}
-                  </ul>
-                </>
-              )}
+              <p><strong>SMS Consent Data Sharing:</strong> {complianceData.privacy_policy.sms_consent_data_share}</p>
+              <p><strong>Data Collection & Usage:</strong> {complianceData.privacy_policy.data_collection_usage}</p>
             </div>
           ) : (
             <p className="error">⚠️ Privacy policy data is missing.</p>
           )}
 
           {/* ✅ Display Terms & Conditions Data */}
-          {complianceData.termsAndConditions ? (
+          {complianceData.terms_conditions ? (
             <div className="report-section">
               <h3>📄 Terms & Conditions</h3>
-              <p><strong>Message Types:</strong> {complianceData.termsAndConditions.messageTypes}</p>
-              <p><strong>Mandatory Disclosures:</strong> {complianceData.termsAndConditions.mandatoryDisclosures}</p>
-              {complianceData.termsAndConditions.recommendations?.length > 0 && (
-                <>
-                  <p><strong>Recommendations:</strong></p>
-                  <ul>
-                    {complianceData.termsAndConditions.recommendations.map((rec, index) => (
-                      <li key={index}>{rec}</li>
-                    ))}
-                  </ul>
-                </>
-              )}
+              <p><strong>Message Types:</strong> {complianceData.terms_conditions.message_types}</p>
+              <p><strong>Mandatory Disclosures:</strong> {complianceData.terms_conditions.mandatory_disclosures}</p>
             </div>
           ) : (
             <p className="error">⚠️ Terms & Conditions data is missing.</p>
           )}
 
           {/* ✅ Display Overall Compliance Summary */}
-          {complianceData.overallComplianceStatus ? (
+          {complianceData.overall_compliance ? (
             <div className="report-section">
               <h3>🔎 Overall Compliance Status</h3>
-              <p>{complianceData.overallComplianceStatus}</p>
+              <p><strong>Privacy Policy:</strong> {complianceData.overall_compliance.privacy_policy}</p>
+              <p><strong>Terms & Conditions:</strong> {complianceData.overall_compliance.terms_conditions}</p>
             </div>
           ) : (
             <p className="error">⚠️ Compliance summary is missing.</p>
@@ -167,3 +148,4 @@ const ComplianceChecker = () => {
 };
 
 export default ComplianceChecker;
+

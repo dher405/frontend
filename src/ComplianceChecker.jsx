@@ -70,6 +70,7 @@ const ComplianceChecker = () => {
               <h3>📜 Privacy Policy</h3>
               <p><strong>SMS Consent Data Sharing:</strong> {complianceData.Privacy_Policy.Consent_Data_Sharing}</p>
               <p><strong>Data Collection & Usage:</strong> {complianceData.Privacy_Policy.Data_Collection_Usage}</p>
+              <p><strong>Comments:</strong> {complianceData.Privacy_Policy.Comments || "No additional comments."}</p>
             </div>
           ) : (
             <p className="error">⚠️ Privacy policy data is missing.</p>
@@ -81,6 +82,7 @@ const ComplianceChecker = () => {
               <h3>📄 Terms & Conditions</h3>
               <p><strong>Message Types:</strong> {complianceData.Terms_Conditions.Message_Types}</p>
               <p><strong>Mandatory Disclosures:</strong> {complianceData.Terms_Conditions.Mandatory_Disclosures}</p>
+              <p><strong>Comments:</strong> {complianceData.Terms_Conditions.Comments || "No additional comments."}</p>
             </div>
           ) : (
             <p className="error">⚠️ Terms & Conditions data is missing.</p>
@@ -90,7 +92,17 @@ const ComplianceChecker = () => {
           {complianceData.Compliance_Status ? (
             <div className="report-section">
               <h3>🔎 Compliance Status</h3>
-              <p>{complianceData.Compliance_Status}</p>
+              <p>{complianceData.Compliance_Status.Status || "No status provided."}</p>
+              {complianceData.Compliance_Status.Recommendations?.length > 0 && (
+                <>
+                  <p><strong>Recommendations:</strong></p>
+                  <ul>
+                    {complianceData.Compliance_Status.Recommendations.map((rec, index) => (
+                      <li key={index}>{rec}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </div>
           ) : (
             <p className="error">⚠️ Compliance summary is missing.</p>

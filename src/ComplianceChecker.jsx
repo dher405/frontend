@@ -12,18 +12,27 @@ const ComplianceChecker = () => {
     setComplianceData(null);
 
     try {
+      console.log("Sending request to API..."); // Debugging log
       const response = await fetch(
-        `https://tcr-api-bzn4.onrender.com/check_compliance?website_url=${encodeURIComponent(websiteUrl)}`
+        `https://tcr-api-bzn4.onrender.com/check_compliance?website_url=${encodeURIComponent(websiteUrl)}`,
+        { method: "GET" }
       );
 
       if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
       }
 
       const data = await response.json();
-      setComplianceData(data.complianceAnalysis); // ✅ Extract the correct key
+
+      if (!data || !data.SMS_Compliance) {
+        throw new Error("Invalid API response format.");
+      }
+
+      setComplianceData(data.SMS_Compliance);
+      console.log("API Response:", data); // Debugging log
     } catch (err) {
-      setError("Failed to check compliance. Please try again.");
+      console.error("API Error:", err);
+      setError(`Failed to check compliance: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -48,23 +57,23 @@ const ComplianceChecker = () => {
         <div className="results">
           <h2>Compliance Report</h2>
 
-          {/* ✅ Check if privacyPolicy exists before accessing */}
-          {complianceData.privacyPolicy ? (
+          {/* ✅ Check if Privacy Policy exists */}
+          {complianceData.Privacy_Policy ? (
             <div className="report-section">
               <h3>📜 Privacy Policy</h3>
-              <p><strong>SMS Consent Data Sharing:</strong> {complianceData.privacyPolicy.smsConsentDataSharing}</p>
-              <p><strong>Data Collection & Usage:</strong> {complianceData.privacyPolicy.dataCollectionAndUsageExplanation}</p>
+              <p><strong>SMS Consent Data Sharing:</strong> {complianceData.Privacy_Policy.SMS_Consent_Data_Sharing}</p>
+              <p><strong>Data Collection & Usage:</strong> {complianceData.Privacy_Policy.Data_Collection_Usage}</p>
             </div>
           ) : (
             <p className="error">⚠️ Privacy policy data is missing.</p>
           )}
 
-          {/* ✅ Check if termsAndConditions exists before accessing */}
-          {complianceData.termsAndConditions ? (
+          {/* ✅ Check if Terms & Conditions exist */}
+          {complianceData.Terms_Conditions ? (
             <div className="report-section">
               <h3>📄 Terms & Conditions</h3>
-              <p><strong>Message Types:</strong> {complianceData.termsAndConditions.messageTypes}</p>
-              <p><strong>Mandatory Disclosures:</strong> {complianceData.termsAndConditions.mandatoryDisclosures}</p>
+              <p><strong>Message Types:</strong> {complianceData.Terms_Conditions.Message_Types}</p>
+              <p><strong>Mandatory Disclosures:</strong> {complianceData.Terms_Conditions.Mandatory_Disclosures}</p>
             </div>
           ) : (
             <p className="error">⚠️ Terms & Conditions data is missing.</p>
@@ -121,3 +130,4 @@ const ComplianceChecker = () => {
 };
 
 export default ComplianceChecker;
+

@@ -31,11 +31,11 @@ const ComplianceChecker = () => {
 
       const data = await response.json();
 
-      if (!data || !data.compliance_analysis) {
+      if (!data || !data.complianceAnalysis) {
         throw new Error("Invalid API response format.");
       }
 
-      setComplianceData(data.compliance_analysis);
+      setComplianceData(data.complianceAnalysis);
       console.log("API Response:", data);
     } catch (err) {
       console.error("API Error:", err);
@@ -65,37 +65,61 @@ const ComplianceChecker = () => {
           <h2>Compliance Report</h2>
 
           {/* ✅ Display Privacy Policy Data */}
-          {complianceData.privacy_policy ? (
+          {complianceData.privacyPolicy ? (
             <div className="report-section">
               <h3>📜 Privacy Policy</h3>
-              <p><strong>SMS Consent Data Sharing:</strong> {complianceData.privacy_policy.sms_consent_data}</p>
-              <p><strong>Data Collection & Usage:</strong> {complianceData.privacy_policy.data_collection_explanation}</p>
+              <p>
+                <strong>SMS Consent Data Sharing:</strong>{" "}
+                {complianceData.privacyPolicy.smsConsentDataSharing
+                  ? "Explicitly stated."
+                  : "Not explicitly stated."}
+              </p>
+              <p>
+                <strong>Data Collection & Usage Explanation:</strong>{" "}
+                {complianceData.privacyPolicy.dataCollectionExplanation
+                  ? "Provided."
+                  : "Not clearly explained."}
+              </p>
+              <p><strong>Comments:</strong> {complianceData.privacyPolicy.comments}</p>
             </div>
           ) : (
             <p className="error">⚠️ Privacy policy data is missing.</p>
           )}
 
           {/* ✅ Display Terms & Conditions Data */}
-          {complianceData.terms_conditions ? (
+          {complianceData.termsConditions ? (
             <div className="report-section">
               <h3>📄 Terms & Conditions</h3>
-              <p><strong>Message Types:</strong> {complianceData.terms_conditions.message_types}</p>
-              <p><strong>Mandatory Disclosures:</strong> {complianceData.terms_conditions.mandatory_disclosures}</p>
+              <p>
+                <strong>Message Types Specified:</strong>{" "}
+                {complianceData.termsConditions.messageTypesSpecified
+                  ? "Specified."
+                  : "Not specified."}
+              </p>
+              <p>
+                <strong>Mandatory Disclosures Included:</strong>{" "}
+                {complianceData.termsConditions.mandatoryDisclosuresIncluded
+                  ? "Included."
+                  : "Not included."}
+              </p>
+              <p><strong>Comments:</strong> {complianceData.termsConditions.comments}</p>
             </div>
           ) : (
             <p className="error">⚠️ Terms & Conditions data is missing.</p>
           )}
 
           {/* ✅ Display Overall Compliance Summary */}
-          {complianceData.overall_compliance ? (
+          {complianceData.overallCompliance ? (
             <div className="report-section">
               <h3>🔎 Overall Compliance Status</h3>
-              <p><strong>Status:</strong> {complianceData.overall_compliance.status}</p>
-              {complianceData.overall_compliance.recommendations?.length > 0 && (
+              <p>
+                <strong>Status:</strong> {complianceData.overallCompliance.complianceStatus}
+              </p>
+              {complianceData.overallCompliance.recommendations?.length > 0 && (
                 <>
                   <p><strong>Recommendations:</strong></p>
                   <ul>
-                    {complianceData.overall_compliance.recommendations.map((rec, index) => (
+                    {complianceData.overallCompliance.recommendations.map((rec, index) => (
                       <li key={index}>{rec}</li>
                     ))}
                   </ul>

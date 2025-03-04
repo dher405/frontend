@@ -44,7 +44,7 @@ export default function ComplianceChecker() {
 
   return (
     <div className="flex flex-col items-center gap-4 p-6">
-      <h1 className="text-2xl font-bold">TCR Compliance Checker</h1>
+      <h1 className="text-2xl font-bold">TCR Website Compliance Checker</h1>
       <input
         type="text"
         placeholder="Enter website URL"

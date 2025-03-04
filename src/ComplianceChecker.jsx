@@ -72,7 +72,6 @@ export default function ComplianceChecker() {
           {/* Privacy Policy Section */}
           <div className="mt-3 p-3 bg-white rounded shadow">
             <h3 className="text-md font-semibold">Privacy Policy Compliance</h3>
-            <p><strong>Text Length:</strong> {report.privacy_policy.text_length} characters</p>
             <p>
               <strong>Status:</strong> {report.privacy_policy.found ? (
                 <span className="text-green-600">✅ Found</span>
@@ -84,20 +83,15 @@ export default function ComplianceChecker() {
             {/* Privacy Policy Compliance Details */}
             <div className="mt-2">
               <h4 className="font-semibold">Compliance Details:</h4>
-              <ul className="list-disc ml-5 text-gray-700">
-                {report.privacy_policy.compliance_report
-                  .split("\n")
-                  .map((line, index) => (
-                    <li key={index}>{line}</li>
-                  ))}
-              </ul>
+              <p className="text-gray-700 whitespace-pre-line">
+                {report.privacy_policy.compliance_report}
+              </p>
             </div>
           </div>
 
           {/* Terms & Conditions Section */}
           <div className="mt-3 p-3 bg-white rounded shadow">
             <h3 className="text-md font-semibold">Terms & Conditions Compliance</h3>
-            <p><strong>Text Length:</strong> {report.terms_conditions.text_length} characters</p>
             <p>
               <strong>Status:</strong> {report.terms_conditions.found ? (
                 <span className="text-green-600">✅ Found</span>
@@ -109,18 +103,18 @@ export default function ComplianceChecker() {
             {/* Terms & Conditions Compliance Details */}
             <div className="mt-2">
               <h4 className="font-semibold">Compliance Details:</h4>
-              <ul className="list-disc ml-5 text-gray-700">
-                {report.terms_conditions.compliance_report
-                  .split("\n")
-                  .map((line, index) => (
-                    <li key={index}>{line}</li>
-                  ))}
-              </ul>
+              <p className="text-gray-700 whitespace-pre-line">
+                {report.terms_conditions.compliance_report}
+              </p>
             </div>
           </div>
 
         </div>
       )}
+    </div>
+  );
+}
+
     </div>
   );
 }

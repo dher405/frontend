@@ -80,8 +80,18 @@ export default function ComplianceChecker() {
                 <span className="text-red-600">❌ Not Found</span>
               )}
             </p>
-            <p className="mt-2"><strong>Compliance Details:</strong></p>
-            <p className="text-gray-700">{report.privacy_policy.compliance_report}</p>
+            
+            {/* Privacy Policy Compliance Details */}
+            <div className="mt-2">
+              <h4 className="font-semibold">Compliance Details:</h4>
+              <ul className="list-disc ml-5 text-gray-700">
+                {report.privacy_policy.compliance_report
+                  .split("\n")
+                  .map((line, index) => (
+                    <li key={index}>{line}</li>
+                  ))}
+              </ul>
+            </div>
           </div>
 
           {/* Terms & Conditions Section */}
@@ -95,9 +105,20 @@ export default function ComplianceChecker() {
                 <span className="text-red-600">❌ Not Found</span>
               )}
             </p>
-            <p className="mt-2"><strong>Compliance Details:</strong></p>
-            <p className="text-gray-700">{report.terms_conditions.compliance_report}</p>
+            
+            {/* Terms & Conditions Compliance Details */}
+            <div className="mt-2">
+              <h4 className="font-semibold">Compliance Details:</h4>
+              <ul className="list-disc ml-5 text-gray-700">
+                {report.terms_conditions.compliance_report
+                  .split("\n")
+                  .map((line, index) => (
+                    <li key={index}>{line}</li>
+                  ))}
+              </ul>
+            </div>
           </div>
+
         </div>
       )}
     </div>

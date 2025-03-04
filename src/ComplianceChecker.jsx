@@ -18,27 +18,27 @@ export default function ComplianceChecker() {
       setError("Please enter a valid website URL.");
       return;
     }
-    
+
     const formattedUrl = ensureHttps(url);
     setLoading(true);
     setError(null);
     setReport(null);
-    
+
     try {
       const response = await fetch(
         `https://tcr-api-bzn4.onrender.com/check_compliance?website_url=${encodeURIComponent(formattedUrl)}`
       );
-      
+
       if (!response.ok) {
         throw new Error("Failed to retrieve compliance report.");
       }
-      
+
       const data = await response.json();
-      console.log("API Response:", data);  // Debugging line
+      console.log("API Response:", data); // Debugging line
 
       setReport(data);
     } catch (err) {
-      console.error("Fetch Error:", err);  // Debugging line
+      console.error("Fetch Error:", err); // Debugging line
       setError(err.message);
     } finally {
       setLoading(false);
@@ -62,7 +62,9 @@ export default function ComplianceChecker() {
       >
         {loading ? "Checking..." : "Check Compliance"}
       </button>
+
       {error && <p className="text-red-500">{error}</p>}
+
       {report && (
         <div className="w-full max-w-2xl p-4 border rounded mt-4 bg-gray-100">
           <h2 className="text-lg font-semibold">Compliance Report</h2>
@@ -72,8 +74,6 @@ export default function ComplianceChecker() {
       )}
     </div>
   );
-}
-
 }
 
 

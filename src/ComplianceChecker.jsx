@@ -68,8 +68,14 @@ const ComplianceChecker = () => {
           {complianceData.privacy_policy ? (
             <div className="report-section">
               <h3>📜 Privacy Policy</h3>
-              <p><strong>SMS Consent Data Sharing:</strong> {complianceData.privacy_policy.sms_consent_data}</p>
-              <p><strong>Data Collection & Usage:</strong> {complianceData.privacy_policy.data_collection_usage}</p>
+              <p>
+                <strong>SMS Consent Data Sharing:</strong>{" "}
+                {complianceData.privacy_policy.sms_consent_data || "No data available."}
+              </p>
+              <p>
+                <strong>Data Collection & Usage:</strong>{" "}
+                {complianceData.privacy_policy.data_collection_usage || "No data available."}
+              </p>
             </div>
           ) : (
             <p className="error">⚠️ Privacy policy data is missing.</p>
@@ -79,18 +85,24 @@ const ComplianceChecker = () => {
           {complianceData.terms_conditions ? (
             <div className="report-section">
               <h3>📄 Terms & Conditions</h3>
-              <p><strong>Message Types:</strong> {complianceData.terms_conditions.message_types}</p>
-              <p><strong>Mandatory Disclosures:</strong> {complianceData.terms_conditions.mandatory_disclosures}</p>
+              <p>
+                <strong>Message Types:</strong>{" "}
+                {complianceData.terms_conditions.message_types || "No data available."}
+              </p>
+              <p>
+                <strong>Mandatory Disclosures:</strong>{" "}
+                {complianceData.terms_conditions.mandatory_disclosures || "No data available."}
+              </p>
             </div>
           ) : (
             <p className="error">⚠️ Terms & Conditions data is missing.</p>
           )}
 
           {/* ✅ Display Overall Compliance Summary */}
-          {complianceData.overall_compliance_status ? (
+          {complianceData.compliance_status ? (
             <div className="report-section">
               <h3>🔎 Overall Compliance Status</h3>
-              <p>{complianceData.overall_compliance_status}</p>
+              <p>{complianceData.compliance_status || "No status provided."}</p>
             </div>
           ) : (
             <p className="error">⚠️ Compliance summary is missing.</p>

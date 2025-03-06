@@ -49,7 +49,7 @@ const ComplianceChecker = () => {
 
   return (
     <div className="container">
-      <h1>TCR Compliance Checker</h1>
+      <h1>TCR Website Compliance Checker</h1>
       <input
         type="text"
         value={websiteUrl}

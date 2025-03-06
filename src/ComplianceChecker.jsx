@@ -5,6 +5,7 @@ const ComplianceChecker = () => {
   const [complianceData, setComplianceData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [apiUrl, setApiUrl] = useState(""); // To store and display the API URL
 
   const checkCompliance = async () => {
     setLoading(true);
@@ -12,20 +13,24 @@ const ComplianceChecker = () => {
     setComplianceData(null);
 
     try {
-      console.log("Sending request to API...");
-      const response = await fetch(
-        `https://tcr-api-bzn4.onrender.com/check_compliance?website_url=${encodeURIComponent(
-          websiteUrl
-        )}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          mode: "cors",
-          credentials: "include",
-        }
-      );
+      // Strip path and add https://
+      let websiteDomain = new URL(websiteUrl).hostname;
+      const apiUrl = `https://tcr-api-bzn4.onrender.com/check_compliance?website_url=${encodeURIComponent(
+        "https://" + websiteDomain
+      )}`;
+
+      setApiUrl(apiUrl); // Store the API URL for display
+
+      console.log("Sending request to API:", apiUrl);
+
+      const response = await fetch(apiUrl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode: "cors",
+        credentials: "include",
+      });
 
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${response.statusText}`);
@@ -67,15 +72,15 @@ const ComplianceChecker = () => {
           <h2>Compliance Report</h2>
 
           <div className="report-section">
-            <h3>📜 Privacy Policy</h3>
+             <h3>📜 Privacy Policy</h3>
             <p>
-              <strong>SMS Consent Statement:</strong> {" "}
+              <strong>SMS Consent Statement:</strong>{" "}
               {complianceData.privacy_policy?.sms_consent_statement?.status === "found"
                 ? complianceData.privacy_policy.sms_consent_statement.statement
                 : "Not found"}
             </p>
             <p>
-              <strong>Data Usage Explanation:</strong> {" "}
+              <strong>Data Usage Explanation:</strong>{" "}
               {complianceData.privacy_policy?.data_usage_explanation?.status === "found"
                 ? complianceData.privacy_policy.data_usage_explanation.statement
                 : "Not found"}
@@ -85,13 +90,13 @@ const ComplianceChecker = () => {
           <div className="report-section">
             <h3>📄 Terms & Conditions</h3>
             <p>
-              <strong>Message Types Specified:</strong> {" "}
+              <strong>Message Types Specified:</strong>{" "}
               {complianceData.terms_conditions?.message_types_specified?.status === "found"
                 ? complianceData.terms_conditions.message_types_specified.statement
                 : "Not found"}
             </p>
             <p>
-              <strong>Mandatory Disclosures:</strong> {" "}
+              <strong>Mandatory Disclosures:</strong>{" "}
               {complianceData.terms_conditions?.mandatory_disclosures?.status === "found"
                 ? complianceData.terms_conditions.mandatory_disclosures.statement
                 : "Not found"}
@@ -107,7 +112,7 @@ const ComplianceChecker = () => {
 
           {complianceData.recommendations && complianceData.recommendations.length > 0 && (
             <div className="report-section">
-              <h3>💡 Recommendations</h3>
+              <h3>庁 Recommendations</h3>
               <ul>
                 {complianceData.recommendations.map((rec, index) => (
                   <li key={index}>{rec}</li>

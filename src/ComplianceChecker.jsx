@@ -119,7 +119,7 @@ const ComplianceChecker = () => {
 
           {complianceData.recommendations && complianceData.recommendations.length > 0 && (
             <div className="report-section">
-              <h3>Recommendations</h3>
+              <h3>庁 Recommendations</h3>
               <ul>
                 {complianceData.recommendations.map((rec, index) => (
                   <li key={index}>{rec}</li>

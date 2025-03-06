@@ -5,7 +5,7 @@ const ComplianceChecker = () => {
   const [complianceData, setComplianceData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [apiUrl, setApiUrl] = useState(""); // To store and display the API URL
+  const [apiUrl, setApiUrl] = useState("");
 
   const checkCompliance = async () => {
     setLoading(true);
@@ -13,13 +13,20 @@ const ComplianceChecker = () => {
     setComplianceData(null);
 
     try {
-      // Strip path and add https://
-      let websiteDomain = new URL(websiteUrl).hostname;
+      // Extract domain using a regular expression
+      const domainRegex = /^(https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/;
+      const match = websiteUrl.match(domainRegex);
+      const websiteDomain = match ? match[2] : null; // Extract the domain part (group 2)
+
+      if (!websiteDomain) {
+        throw new Error("Invalid website URL format.");
+      }
+
       const apiUrl = `https://tcr-api-bzn4.onrender.com/check_compliance?website_url=${encodeURIComponent(
         "https://" + websiteDomain
       )}`;
 
-      setApiUrl(apiUrl); // Store the API URL for display
+      setApiUrl(apiUrl);
 
       console.log("Sending request to API:", apiUrl);
 
@@ -72,7 +79,7 @@ const ComplianceChecker = () => {
           <h2>Compliance Report</h2>
 
           <div className="report-section">
-             <h3>📜 Privacy Policy</h3>
+            <h3>📜 Privacy Policy</h3>
             <p>
               <strong>SMS Consent Statement:</strong>{" "}
               {complianceData.privacy_policy?.sms_consent_statement?.status === "found"

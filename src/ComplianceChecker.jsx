@@ -69,30 +69,40 @@ const ComplianceChecker = () => {
           <div className="report-section">
             <h3>📜 Privacy Policy</h3>
             <p>
-              <strong>SMS Consent Statement:</strong>{" "}
-              {complianceData.privacy_policy.sms_consent_statement || "Not found"}
+              <strong>SMS Consent Statement:</strong> {" "}
+              {complianceData.privacy_policy?.sms_consent_statement?.status === "found"
+                ? complianceData.privacy_policy.sms_consent_statement.statement
+                : "Not found"}
             </p>
             <p>
-              <strong>Data Usage Explanation:</strong>{" "}
-              {complianceData.privacy_policy.data_usage_explanation || "Not found"}
+              <strong>Data Usage Explanation:</strong> {" "}
+              {complianceData.privacy_policy?.data_usage_explanation?.status === "found"
+                ? complianceData.privacy_policy.data_usage_explanation.statement
+                : "Not found"}
             </p>
           </div>
 
           <div className="report-section">
             <h3>📄 Terms & Conditions</h3>
             <p>
-              <strong>Message Types Specified:</strong>{" "}
-              {complianceData.terms_conditions.message_types_specified || "Not found"}
+              <strong>Message Types Specified:</strong> {" "}
+              {complianceData.terms_conditions?.message_types_specified?.status === "found"
+                ? complianceData.terms_conditions.message_types_specified.statement
+                : "Not found"}
             </p>
             <p>
-              <strong>Mandatory Disclosures:</strong>{" "}
-              {complianceData.terms_conditions.mandatory_disclosures || "Not found"}
+              <strong>Mandatory Disclosures:</strong> {" "}
+              {complianceData.terms_conditions?.mandatory_disclosures?.status === "found"
+                ? complianceData.terms_conditions.mandatory_disclosures.statement
+                : "Not found"}
             </p>
           </div>
 
           <div className="report-section">
             <h3>🔎 Overall Compliance Status</h3>
-            <p><strong>Status:</strong> {complianceData.overall_compliance || "Unknown"}</p>
+            <p>
+              <strong>Status:</strong> {complianceData.overall_compliance || "Unknown"}
+            </p>
           </div>
 
           {complianceData.recommendations && complianceData.recommendations.length > 0 && (
@@ -157,3 +167,4 @@ const ComplianceChecker = () => {
 };
 
 export default ComplianceChecker;
+

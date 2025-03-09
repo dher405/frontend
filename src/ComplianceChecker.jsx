@@ -66,7 +66,7 @@ const ComplianceChecker = () => {
         type="text"
         value={websiteUrl}
         onChange={(e) => setWebsiteUrl(e.target.value)}
-        placeholder="Enter website URL"
+        placeholder="https://"
       />
       <button onClick={checkCompliance} disabled={loading}>
         {loading ? "Checking..." : "Check Compliance"}

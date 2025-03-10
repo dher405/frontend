@@ -82,15 +82,39 @@ const ComplianceChecker = () => {
             <h3>📜 Privacy Policy</h3>
             <p>
               <strong>SMS Consent Statement:</strong>{" "}
-              {complianceData.privacy_policy?.sms_consent_statement?.status === "found"
-                ? complianceData.privacy_policy.sms_consent_statement.statement
-                : "Not found"}
+              {complianceData.privacy_policy?.sms_consent_statement?.status ===
+              "found" ? (
+                <>
+                  {complianceData.privacy_policy.sms_consent_statement.statement}{" "}
+                  <a
+                    href={complianceData.privacy_policy.sms_consent_statement.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    (Source)
+                  </a>
+                </>
+              ) : (
+                "Not found"
+              )}
             </p>
             <p>
               <strong>Data Usage Explanation:</strong>{" "}
-              {complianceData.privacy_policy?.data_usage_explanation?.status === "found"
-                ? complianceData.privacy_policy.data_usage_explanation.statement
-                : "Not found"}
+              {complianceData.privacy_policy?.data_usage_explanation?.status ===
+              "found" ? (
+                <>
+                  {complianceData.privacy_policy.data_usage_explanation.statement}{" "}
+                  <a
+                    href={complianceData.privacy_policy.data_usage_explanation.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    (Source)
+                  </a>
+                </>
+              ) : (
+                "Not found"
+              )}
             </p>
           </div>
 
@@ -98,15 +122,42 @@ const ComplianceChecker = () => {
             <h3>📄 Terms & Conditions</h3>
             <p>
               <strong>Message Types Specified:</strong>{" "}
-              {complianceData.terms_conditions?.message_types_specified?.status === "found"
-                ? complianceData.terms_conditions.message_types_specified.statement
-                : "Not found"}
+              {complianceData.terms_conditions?.message_types_specified
+                ?.status === "found" ? (
+                <>
+                  {complianceData.terms_conditions.message_types_specified
+                    .statement}{" "}
+                  <a
+                    href={
+                      complianceData.terms_conditions.message_types_specified.url
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    (Source)
+                  </a>
+                </>
+              ) : (
+                "Not found"
+              )}
             </p>
             <p>
               <strong>Mandatory Disclosures:</strong>{" "}
-              {complianceData.terms_conditions?.mandatory_disclosures?.status === "found"
-                ? complianceData.terms_conditions.mandatory_disclosures.statement
-                : "Not found"}
+              {complianceData.terms_conditions?.mandatory_disclosures?.status ===
+              "found" ? (
+                <>
+                  {complianceData.terms_conditions.mandatory_disclosures.statement}{" "}
+                  <a
+                    href={complianceData.terms_conditions.mandatory_disclosures.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    (Source)
+                  </a>
+                </>
+              ) : (
+                "Not found"
+              )}
             </p>
           </div>
 
@@ -117,16 +168,17 @@ const ComplianceChecker = () => {
             </p>
           </div>
 
-          {complianceData.recommendations && complianceData.recommendations.length > 0 && (
-            <div className="report-section">
-              <h3>Recommendations</h3>
-              <ul>
-                {complianceData.recommendations.map((rec, index) => (
-                  <li key={index}>{rec}</li>
-                ))}
-              </ul>
-            </div>
-          )}
+          {complianceData.recommendations &&
+            complianceData.recommendations.length > 0 && (
+              <div className="report-section">
+                <h3>Recommendations</h3>
+                <ul>
+                  {complianceData.recommendations.map((rec, index) => (
+                    <li key={index}>{rec}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
         </div>
       )}
 

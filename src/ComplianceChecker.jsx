@@ -16,7 +16,7 @@ const ComplianceChecker = () => {
       // Extract domain using a regular expression
       const domainRegex = /^(https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/;
       const match = websiteUrl.match(domainRegex);
-      const websiteDomain = match ? match[2] : null; // Extract the domain part (group 2)
+      const websiteDomain = match ? match[2] : null;
 
       if (!websiteDomain) {
         throw new Error("Invalid website URL format.");
@@ -61,12 +61,12 @@ const ComplianceChecker = () => {
 
   return (
     <div className="container">
-      <h1>TCR Website Compliance Checker</h1>
+      <h1>📋 TCR Website Compliance Checker</h1>
       <input
         type="text"
         value={websiteUrl}
         onChange={(e) => setWebsiteUrl(e.target.value)}
-        placeholder="https://"
+        placeholder="Enter website URL (e.g., https://example.com)"
       />
       <button onClick={checkCompliance} disabled={loading}>
         {loading ? "Checking..." : "Check Compliance"}
@@ -76,14 +76,14 @@ const ComplianceChecker = () => {
 
       {complianceData && (
         <div className="results">
-          <h2>Compliance Report</h2>
+          <h2>✅ Compliance Report</h2>
 
+          {/* Privacy Policy Section */}
           <div className="report-section">
             <h3>📜 Privacy Policy</h3>
             <p>
               <strong>SMS Consent Statement:</strong>{" "}
-              {complianceData.privacy_policy?.sms_consent_statement?.status ===
-              "found" ? (
+              {complianceData.privacy_policy?.sms_consent_statement?.status === "found" ? (
                 <>
                   {complianceData.privacy_policy.sms_consent_statement.statement}{" "}
                   <a
@@ -95,13 +95,22 @@ const ComplianceChecker = () => {
                   </a>
                 </>
               ) : (
-                "Not found"
+                <>
+                  ❌ Not found <br />
+                  <strong>Detected:</strong>{" "}
+                  {complianceData.privacy_policy?.sms_consent_statement?.detected_candidates?.join(
+                    ", "
+                  ) || "None"}{" "}
+                  <br />
+                  <strong>Reason:</strong>{" "}
+                  {complianceData.privacy_policy?.sms_consent_statement?.rejection_reason || "N/A"}
+                </>
               )}
             </p>
+
             <p>
               <strong>Data Usage Explanation:</strong>{" "}
-              {complianceData.privacy_policy?.data_usage_explanation?.status ===
-              "found" ? (
+              {complianceData.privacy_policy?.data_usage_explanation?.status === "found" ? (
                 <>
                   {complianceData.privacy_policy.data_usage_explanation.statement}{" "}
                   <a
@@ -113,24 +122,30 @@ const ComplianceChecker = () => {
                   </a>
                 </>
               ) : (
-                "Not found"
+                <>
+                  ❌ Not found <br />
+                  <strong>Detected:</strong>{" "}
+                  {complianceData.privacy_policy?.data_usage_explanation?.detected_candidates?.join(
+                    ", "
+                  ) || "None"}{" "}
+                  <br />
+                  <strong>Reason:</strong>{" "}
+                  {complianceData.privacy_policy?.data_usage_explanation?.rejection_reason || "N/A"}
+                </>
               )}
             </p>
           </div>
 
+          {/* Terms & Conditions Section */}
           <div className="report-section">
             <h3>📄 Terms & Conditions</h3>
             <p>
               <strong>Message Types Specified:</strong>{" "}
-              {complianceData.terms_conditions?.message_types_specified
-                ?.status === "found" ? (
+              {complianceData.terms_conditions?.message_types_specified?.status === "found" ? (
                 <>
-                  {complianceData.terms_conditions.message_types_specified
-                    .statement}{" "}
+                  {complianceData.terms_conditions.message_types_specified.statement}{" "}
                   <a
-                    href={
-                      complianceData.terms_conditions.message_types_specified.url
-                    }
+                    href={complianceData.terms_conditions.message_types_specified.url}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -138,13 +153,22 @@ const ComplianceChecker = () => {
                   </a>
                 </>
               ) : (
-                "Not found"
+                <>
+                  ❌ Not found <br />
+                  <strong>Detected:</strong>{" "}
+                  {complianceData.terms_conditions?.message_types_specified?.detected_candidates?.join(
+                    ", "
+                  ) || "None"}{" "}
+                  <br />
+                  <strong>Reason:</strong>{" "}
+                  {complianceData.terms_conditions?.message_types_specified?.rejection_reason || "N/A"}
+                </>
               )}
             </p>
+
             <p>
               <strong>Mandatory Disclosures:</strong>{" "}
-              {complianceData.terms_conditions?.mandatory_disclosures?.status ===
-              "found" ? (
+              {complianceData.terms_conditions?.mandatory_disclosures?.status === "found" ? (
                 <>
                   {complianceData.terms_conditions.mandatory_disclosures.statement}{" "}
                   <a
@@ -156,11 +180,21 @@ const ComplianceChecker = () => {
                   </a>
                 </>
               ) : (
-                "Not found"
+                <>
+                  ❌ Not found <br />
+                  <strong>Detected:</strong>{" "}
+                  {complianceData.terms_conditions?.mandatory_disclosures?.detected_candidates?.join(
+                    ", "
+                  ) || "None"}{" "}
+                  <br />
+                  <strong>Reason:</strong>{" "}
+                  {complianceData.terms_conditions?.mandatory_disclosures?.rejection_reason || "N/A"}
+                </>
               )}
             </p>
           </div>
 
+          {/* Overall Compliance Status */}
           <div className="report-section">
             <h3>🔎 Overall Compliance Status</h3>
             <p>
@@ -168,10 +202,11 @@ const ComplianceChecker = () => {
             </p>
           </div>
 
+          {/* Recommendations Section */}
           {complianceData.recommendations &&
             complianceData.recommendations.length > 0 && (
               <div className="report-section">
-                <h3>Recommendations</h3>
+                <h3>🛠 Recommendations</h3>
                 <ul>
                   {complianceData.recommendations.map((rec, index) => (
                     <li key={index}>{rec}</li>
@@ -185,7 +220,7 @@ const ComplianceChecker = () => {
       <style>{`
         .container {
           text-align: center;
-          max-width: 600px;
+          max-width: 700px;
           margin: auto;
           padding: 20px;
         }
@@ -203,10 +238,6 @@ const ComplianceChecker = () => {
           color: white;
           cursor: pointer;
           border-radius: 5px;
-        }
-        button:disabled {
-          background: #aaa;
-          cursor: not-allowed;
         }
         .results {
           text-align: left;
